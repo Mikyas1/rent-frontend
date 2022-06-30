@@ -6,16 +6,34 @@
           <v-card class="elevation-12">
             <v-toolbar color="primary" dark flat>
               <v-toolbar-title>
-                <v-icon>fa-sign-in</v-icon>
+                <v-icon>fa-user-plus</v-icon>
                 <span
                   class="ml-2 link"
                   @click="$router.push({ name: 'property_list' })"
-                  >Betoch Login</span
+                  >Betoch Sign Up</span
                 >
               </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form" v-on:submit.prevent="login">
+              <v-form ref="form" v-on:submit.prevent="register">
+                <v-text-field
+                  label="First Name"
+                  prepend-icon="fa-user"
+                  type="text"
+                  v-model="first_name"
+                  :rules="lenRules('First Name', 3)"
+                  required
+                />
+
+                <v-text-field
+                  label="Last Name"
+                  prepend-icon="fa-user"
+                  type="text"
+                  v-model="last_name"
+                  :rules="lenRules('Last Name', 3)"
+                  required
+                />
+
                 <v-text-field
                   label="Email"
                   prepend-icon="fa-at"
@@ -34,21 +52,24 @@
                   :rules="passwordRules"
                   required
                 />
+                <v-text-field
+                  id="re-password"
+                  label="Confirm Password"
+                  prepend-icon="fa-lock"
+                  type="password"
+                  v-model="conf_password"
+                  :rules="conf_password_rules()"
+                  required
+                />
                 <v-card-actions>
-                  <!-- <div>
-                    <p class="text-read" v-if="Receiver.error">
-                      {{ Receiver.error }}
-                    </p>
-                  </div> -->
-
                   <v-spacer />
                   <v-btn
                     color="primary white--text text-capitalize"
                     type="submit"
                     :loading="Receiver.loading"
                   >
-                    <v-icon small>fa-sign-in</v-icon>
-                    <span class="ml-2">Login</span>
+                    <v-icon small>fa-user-plus</v-icon>
+                    <span class="ml-2">Register</span>
                   </v-btn>
                 </v-card-actions>
               </v-form>
@@ -62,15 +83,20 @@
 
 <script>
 // import { AuthService } from '../../../services/api/auth.service';
-import { emailRules, passwordRules } from "../../../resources/validators";
+import {
+  emailRules,
+  passwordRules,
+  lenRules,
+} from "../../../resources/validators";
 import { AuthService } from "../../../services/auth.service";
 
 export default {
-  name: "login_page",
+  name: "register_page",
   data() {
     return {
       emailRules,
       passwordRules,
+      lenRules,
       Receiver: {
         data: null,
         loaded: false,
@@ -78,19 +104,29 @@ export default {
         error: null,
       },
       email: "",
-
       password: "",
+      conf_password: "",
+      first_name: "",
+      last_name: "",
     };
   },
-  components: {},
   methods: {
-    async login() {
+    async register() {
       if (!this.$refs.form) return;
       if (!this.$refs.form.validate()) return;
-      await this.authService.login(this.Receiver, {
+      await this.authService.register(this.Receiver, {
         email: this.email,
         password: this.password,
+        first_name: this.first_name,
+        last_name: this.last_name,
       });
+    },
+    conf_password_rules() {
+      let rules = [
+        ...this.passwordRules,
+        (v) => v == this.password || "Confirm Password don't match Password",
+      ];
+      return rules;
     },
   },
   created() {

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <NavBar /> -->
+    <NavBar />
 
-    <v-main>
+    <v-main class="c-main">
       <v-container fluid>
         <v-row justify="center" align="center">
           <v-col>
@@ -13,17 +13,23 @@
       </v-container>
     </v-main>
 
-    <!-- <Footer /> -->
+    <Footer />
   </div>
 </template>
 
 <script>
-// import Footer from '../components/Footer.vue';
-// import NavBar from '../components/NavBar.vue';
+import NavBar from './NavBar.vue';
+import Footer from './Footerr.vue';
 
 export default {
   name: 'main_layout',
 
-//   components: { Footer, NavBar },
+  components: { Footer, NavBar },
 };
 </script>
+
+<style scoped>
+.c-main {
+  min-height: 68vh;
+}
+</style>

@@ -1,6 +1,7 @@
 const Module = () => import('./Module.vue');
 const Login = () => import('./views/Login.vue');
 const Logout = () => import('./views/Logout.vue');
+const Register = () => import('./views/Register.vue');
 
 import { AuthRequired, NonAuthRequired } from '@/resources/auth';
 
@@ -21,7 +22,13 @@ const moduleRoute = {
       name: 'logout',
       component: Logout,
       beforeEnter: AuthRequired,
-  },
+    },
+    {
+      path: 'register',
+      name: 'register',
+      component: Register,
+      beforeEnter: NonAuthRequired,
+    },
   ],
 };
 

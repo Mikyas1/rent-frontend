@@ -5,12 +5,16 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 
 import authModule from './modules/auth';
+import propertyModule from './modules/property';
+import renterProfileModule from './modules/renterProfile';
 import rentModule from './modules/rent';
 
 import { registerModules } from './register-modules';
 
 registerModules({
   auth: authModule,
+  property: propertyModule,
+  renterProfile: renterProfileModule,
   rent: rentModule,
 });
 
